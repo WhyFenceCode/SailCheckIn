@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Take a Picture</title>
+    <title>SailCheckIn</title>
   </head>
   <body>
     <div style="position: relative;">
@@ -43,15 +43,15 @@
         var dataURL = canvas.toDataURL('image/png');
         var blob = dataURLToBlob(dataURL);
         var formData = new FormData();
-        formData.append('file', blob);
+        formData.append('image', blob);
 
-        fetch('<URL>', {
+        fetch('https://sailnumberserver.whyfencecode.repl.co/process_image', {
           method: 'POST',
           body: formData
         })
         .then(response => response.text())
         .then(data => {
-          document.getElementById('responseText').innerHTML = data;
+          document.getElementById('overlayText').innerHTML = data;
         })
         .catch(error => console.error(error))
       }
