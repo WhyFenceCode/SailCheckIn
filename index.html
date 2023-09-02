@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Take a Picture</title>
+  </head>
+  <body>
+    <h1>Take a Picture</h1>
+    <p>Click the button below to take a picture:</p>
+    <div style="position: relative;">
+      <video id="cameraPreview" width="640" height="480" autoplay></video>
+      <img id="overlayImage" src="<URL>" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    </div>
+    <br><br>
+    <button onclick="takePicture()">Take Picture</button>
+    <br><br>
+    <div style="position: relative;">
+      <canvas id="pictureCanvas" width="640" height="480"></canvas>
+      <img id="overlayImage2" src="<URL>" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    </div>
+    <br><br>
+    <button onclick="sendPicture()">Send Picture</button>
+    <br><br>
+    <p id="responseText"></p>
+
+    <script>
+      var video = document.getElementById('cameraPreview');
+      var canvas = document.getElementById('pictureCanvas');
+      var context = canvas.getContext('2d');
+
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+          video.srcObject = stream;
+          video.play();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+
+      function takePicture() {
+        context.drawImage(video, 0, 0, 640, 480);
+        video.style.display = 'none';
+        document.getElementById('overlayImage').style.display = 'none';
+      }
+
+      function sendPicture() {
+        var dataURL = canvas.toDataURL('image/png');
+        var blob = dataURLToBlob(dataURL);
+        var formData = new FormData();
+        formData.append('file', blob);
+
+        fetch('<URL>', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('responseText').innerHTML = data;
+        })
+        .catch(error => console.error(error))
+      }
+
+      function dataURLToBlob(dataURL) {
+        var binary = atob(dataURL.split(',')[1]);
+        var array = [];
+        for(var i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i));
+        }
+        return new Blob([new Uint8Array(array)], {type: 'image/png'});
+      }
+    </script>
+  </body>
+</html>
