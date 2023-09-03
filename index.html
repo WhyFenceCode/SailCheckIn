@@ -42,9 +42,16 @@
         });
 
       function takePicture() {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        var overlayImage = document.getElementById('overlayImage');
+        var overlayImageRect = overlayImage.getBoundingClientRect();
+        var videoRect = video.getBoundingClientRect();
+        var sx = overlayImageRect.left - videoRect.left;
+        var sy = overlayImageRect.top - videoRect.top;
+        var sw = overlayImageRect.width;
+        var sh = overlayImageRect.height;
+        context.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
         video.style.display = 'none';
-        document.getElementById('overlayImage').style.display = 'none';
+        overlayImage.style.display = 'none';
         sendPicture()
       }
 
