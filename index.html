@@ -82,9 +82,11 @@
           .then(data => {
             console.log(data);
             document.getElementById('overlayText').innerHTML = data;
+            context.drawImage(imageData, sx, sy, sw, sh);
           })
           .catch(error => console.error(error))
       }
+
 
 
       function dataURLToBlob(dataURL) {
