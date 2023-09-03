@@ -51,19 +51,20 @@
         var sh = overlayImageRect.height;
         context.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
         video.style.display = 'none';
-        overlayImage.style.display = 'none';
-        sendPicture()
+        //overlayImage.style.display = 'none';
+        sendPicture(overlayImage)
       }
 
-      function sendPicture() {
-        var overlayImage = document.getElementById('overlayImage2');
-        var overlayImageRect = overlayImage.getBoundingClientRect();
+      function sendPicture(var overlayImage) {
+        var overlayImage2 = document.getElementById('overlayImage2');
+        var overlayImageRect = overlayImage2.getBoundingClientRect();
         var canvasRect = canvas.getBoundingClientRect();
         var sx = overlayImageRect.left - canvasRect.left;
         var sy = overlayImageRect.top - canvasRect.top;
         var sw = overlayImageRect.width;
         var sh = overlayImageRect.height;
         var imageData = context.getImageData(sx, sy, sw, sh);
+        overlayImage.style.display = 'none';
         var tempCanvas = document.createElement('canvas');
         tempCanvas.width = sw;
         tempCanvas.height = sh;
