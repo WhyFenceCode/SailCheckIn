@@ -56,7 +56,19 @@
       }
 
       function sendPicture() {
-        var dataURL = canvas.toDataURL('image/png');
+        var overlayImage = document.getElementById('overlayImage');
+        var overlayImageRect = overlayImage.getBoundingClientRect();
+        var canvasRect = canvas.getBoundingClientRect();
+        var sx = overlayImageRect.left - canvasRect.left;
+        var sy = overlayImageRect.top - canvasRect.top;
+        var sw = overlayImageRect.width;
+        var sh = overlayImageRect.height;
+        var imageData = context.getImageData(sx, sy, sw, sh);
+        var tempCanvas = document.createElement('canvas');
+        tempCanvas.width = sw;
+        tempCanvas.height = sh;
+        tempCanvas.getContext('2d').putImageData(imageData, 0, 0);
+        var dataURL = tempCanvas.toDataURL('image/png');
         var blob = dataURLToBlob(dataURL);
         var formData = new FormData();
         formData.append('image', blob);
@@ -65,12 +77,14 @@
           method: 'POST',
           body: formData
         })
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('overlayText').innerHTML = data;
-        })
-        .catch(error => console.error(error))
+          .then(response => response.text())
+          .then(data => {
+            console.log(data);
+            document.getElementById('overlayText').innerHTML = data;
+          })
+          .catch(error => console.error(error))
       }
+
 
       function dataURLToBlob(dataURL) {
         var binary = atob(dataURL.split(',')[1]);
