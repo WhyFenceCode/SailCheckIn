@@ -34,7 +34,7 @@
         });
 
       function takePicture() {
-        context.drawImage(video, 40%, 45%, 20%, 10%);
+        context.drawImage(video, 0, 0, 640, 480);
         video.style.display = 'none';
         document.getElementById('overlayImage').style.display = 'none';
         sendPicture()
