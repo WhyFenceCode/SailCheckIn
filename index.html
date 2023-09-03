@@ -42,7 +42,7 @@
         });
 
       function takePicture() {
-        var overlayImage = document.getElementById('overlayImage');
+        var overlayImage = document.getElementById('overlayImage2');
         var overlayImageRect = overlayImage.getBoundingClientRect();
         var videoRect = video.getBoundingClientRect();
         var sx = overlayImageRect.left - videoRect.left;
@@ -56,7 +56,7 @@
       }
 
       function sendPicture() {
-        var overlayImage = document.getElementById('overlayImage');
+        var overlayImage = document.getElementById('overlayImage2');
         var overlayImageRect = overlayImage.getBoundingClientRect();
         var canvasRect = canvas.getBoundingClientRect();
         var sx = overlayImageRect.left - canvasRect.left;
